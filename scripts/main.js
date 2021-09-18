@@ -1,9 +1,7 @@
 const topDisplay = document.querySelector('#top-display');
 const bottomDisplay = document.querySelector('#bottom-display');
-
 const numBtns = document.querySelectorAll('.numBtns');
 const operatorBtns = document.querySelectorAll('.operatorBtns');
-
 const equalBtn = document.querySelector('#equal');
 const clearBtn = document.querySelector('#clear');
 
@@ -18,6 +16,7 @@ operatorBtns.forEach((operatorBtn) =>
 );
 equalBtn.addEventListener('click', displayAnswer);
 clearBtn.addEventListener('click', clearDisplay);
+window.addEventListener('keydown', getKeyInput);
 
 function add(num1, num2) {
   return num1 + num2;
@@ -64,39 +63,46 @@ function displayAnswer() {
         currentOperator
       ).toFixed(2)
     );
-    console.log(answer);
     topDisplay.innerText = answer;
+    // currentNum1 = '';
+    // currentNum2 = '';
+    // currentOperator = '';
+    // disableOperatorBtns();
   }
 }
 
 function displayNumber(e) {
-  let tempNum = getNum(e.target.id);
-  console.log(tempNum);
-  if (currentOperator === '') {
-    console.log(`currentNum1 before: ${currentNum1}`);
-    currentNum1 += tempNum;
-    console.log(`currentNum1 after: ${currentNum1}`);
+  let tempNum = '';
+  if (e.type === 'click') {
+    tempNum = getNum(e.target.id);
   } else {
-    console.log(`currentNum2 before: ${currentNum1}`);
+    tempNum = e;
+  }
+  if (currentOperator === '') {
+    currentNum1 += tempNum;
+  } else {
     currentNum2 += tempNum;
-    console.log(`currentNum2 after: ${currentNum1}`);
   }
   enableOperatorBtns();
   bottomDisplay.innerText = currentNum1 + currentOperator + currentNum2;
 }
 
 function displayOperator(e) {
-  let tempOperator = getOperator(e.target.id);
-  console.log(tempOperator);
-  if (currentOperator === '') {
-    console.log(`currentOperator before: ${currentOperator}`);
-    currentOperator += tempOperator;
-    console.log(`currentOperator after: ${currentOperator}`);
-  } else {
-    displayAnswer();
-    currentNum1 = answer;
-    currentOperator = tempOperator;
-    currentNum2 = '';
+  if (operatorBtns[0].disabled === false) {
+    let tempOperator = '';
+    if (e.type === 'click') {
+      tempOperator = getOperator(e.target.id);
+    } else {
+      tempOperator = getOperator(e);
+    }
+    if (currentOperator === '') {
+      currentOperator += tempOperator;
+    } else {
+      displayAnswer();
+      currentNum1 = answer;
+      currentOperator = tempOperator;
+      currentNum2 = '';
+    }
   }
   disableOperatorBtns();
   enableDecimalBtn();
@@ -110,6 +116,7 @@ function clearDisplay() {
   answer = '';
   topDisplay.innerText = answer;
   bottomDisplay.innerText = currentNum1 + currentOperator + currentNum2;
+  disableOperatorBtns();
 }
 
 function getNum(num) {
@@ -145,12 +152,16 @@ function getNum(num) {
 function getOperator(operator) {
   switch (operator) {
     case 'add':
+    case '+':
       return '+';
     case 'subtract':
+    case '-':
       return '−';
     case 'multiply':
+    case '*':
       return '×';
     case 'divide':
+    case '/':
       return '÷';
     default:
       return 'Something went wrong';
@@ -174,5 +185,22 @@ function enableOperatorBtns() {
 function disableOperatorBtns() {
   for (let i = 0; i < operatorBtns.length; i++) {
     operatorBtns[i].disabled = true;
+  }
+}
+function getKeyInput(e) {
+  if ((e.key >= 0 && e.key <= 9) || e.key === '.') {
+    if (e.key === '.') {
+      disableDecimalBtn();
+    }
+    displayNumber(e.key);
+  }
+  if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
+    displayOperator(e.key);
+  }
+  if (e.key === 'Enter' || e.key === '=') {
+    displayAnswer();
+  }
+  if (e.key === 'Delete' || e.key === 'Escape') {
+    clearDisplay();
   }
 }
