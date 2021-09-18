@@ -3,6 +3,7 @@ const bottomDisplay = document.querySelector('#bottom-display');
 const numBtns = document.querySelectorAll('.numBtns');
 const operatorBtns = document.querySelectorAll('.operatorBtns');
 const equalBtn = document.querySelector('#equal');
+const deleteBtn = document.querySelector('#delete');
 const clearBtn = document.querySelector('#clear');
 
 let currentNum1 = '';
@@ -16,6 +17,7 @@ operatorBtns.forEach((operatorBtn) =>
 );
 equalBtn.addEventListener('click', displayAnswer);
 clearBtn.addEventListener('click', clearDisplay);
+deleteBtn.addEventListener('click', deleteNumber);
 window.addEventListener('keydown', getKeyInput);
 
 function add(num1, num2) {
@@ -57,12 +59,8 @@ function operate(num1, num2, operator) {
 function displayAnswer() {
   if (currentNum1 !== '' && currentOperator !== '' && currentNum2 !== '') {
     answer = parseFloat(
-      operate(
-        parseFloat(currentNum1),
-        parseFloat(currentNum2),
-        currentOperator
-      ).toFixed(2)
-    );
+      operate(parseFloat(currentNum1), parseFloat(currentNum2), currentOperator)
+    ).toString();
     topDisplay.innerText = answer;
     // currentNum1 = '';
     // currentNum2 = '';
@@ -116,7 +114,23 @@ function clearDisplay() {
   answer = '';
   topDisplay.innerText = answer;
   bottomDisplay.innerText = currentNum1 + currentOperator + currentNum2;
+  enableDecimalBtn();
   disableOperatorBtns();
+}
+
+function deleteNumber() {
+  let currentValues = currentNum1.concat(currentOperator, currentNum2);
+  currentValues = currentValues.slice(0, -1);
+  const numbers = currentValues.split(/\+|\−|\×|\÷/g);
+  if (numbers.length > 1) {
+    currentNum1 = numbers.shift();
+    currentNum2 = numbers.shift();
+  } else {
+    currentNum1 = numbers.shift();
+    currentOperator = '';
+    currentNum2 = '';
+  }
+  bottomDisplay.innerText = currentNum1 + currentOperator + currentNum2;
 }
 
 function getNum(num) {

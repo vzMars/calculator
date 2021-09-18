@@ -80,3 +80,26 @@ button:hover {
 #add {
   grid-row: span 2;
 }
+
+@media (max-width: 450px) {
+  #calc {
+    width: 300px;
+  }
+
+  #calc-display {
+    width: 280px;
+    margin: 40px auto;
+  }
+
+  button {
+    font-size: 30px;
+    width: 60px;
+    padding: 0;
+  }
+
+  #calc-buttons {
+    width: fit-content;
+    height: 480px;
+    grid-gap: 15px;
+  }
+}
