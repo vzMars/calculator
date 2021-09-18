@@ -1,20 +1,23 @@
 const topDisplay = document.querySelector('#top-display');
 const bottomDisplay = document.querySelector('#bottom-display');
+
 const numBtns = document.querySelectorAll('.numBtns');
 const operatorBtns = document.querySelectorAll('.operatorBtns');
-const equalBtn = document.querySelector('#equal');
 
-let operationString = '';
-let numbers = [];
-let operator = '';
+const equalBtn = document.querySelector('#equal');
+const clearBtn = document.querySelector('#clear');
+
+let currentNum1 = '';
+let currentNum2 = '';
+let currentOperator = '';
 let answer = '';
 
 numBtns.forEach((numBtn) => numBtn.addEventListener('click', displayNumber));
 operatorBtns.forEach((operatorBtn) =>
   operatorBtn.addEventListener('click', displayOperator)
 );
-
 equalBtn.addEventListener('click', displayAnswer);
+clearBtn.addEventListener('click', clearDisplay);
 
 function add(num1, num2) {
   return num1 + num2;
@@ -29,6 +32,11 @@ function multiply(num1, num2) {
 }
 
 function divide(num1, num2) {
+  if (num2 == 0) {
+    alert('One Does Not Simply Divide By Zero...');
+    currentNum2 = '';
+    return 0;
+  }
   return num1 / num2;
 }
 
@@ -48,39 +56,63 @@ function operate(num1, num2, operator) {
 }
 
 function displayAnswer() {
-  operator = operationString.replace(/[0-9]|\./g, '');
-  numbers = operationString.split(/\+|\−|\×|\÷/g);
-  console.log(operationString);
-  console.log(operator);
-  console.log(numbers);
-
-  answer = operate(parseFloat(numbers[0]), parseFloat(numbers[1]), operator);
-
-  topDisplay.innerText = answer;
+  if (currentNum1 !== '' && currentOperator !== '' && currentNum2 !== '') {
+    answer = parseFloat(
+      operate(
+        parseFloat(currentNum1),
+        parseFloat(currentNum2),
+        currentOperator
+      ).toFixed(2)
+    );
+    console.log(answer);
+    topDisplay.innerText = answer;
+  }
 }
 
 function displayNumber(e) {
-  operationString += getChosenNum(e.target.id);
-  bottomDisplay.innerText = operationString;
+  let tempNum = getNum(e.target.id);
+  console.log(tempNum);
+  if (currentOperator === '') {
+    console.log(`currentNum1 before: ${currentNum1}`);
+    currentNum1 += tempNum;
+    console.log(`currentNum1 after: ${currentNum1}`);
+  } else {
+    console.log(`currentNum2 before: ${currentNum1}`);
+    currentNum2 += tempNum;
+    console.log(`currentNum2 after: ${currentNum1}`);
+  }
   enableOperatorBtns();
+  bottomDisplay.innerText = currentNum1 + currentOperator + currentNum2;
 }
 
 function displayOperator(e) {
-  if (
-    operationString.includes('+') ||
-    operationString.includes('−') ||
-    operationString.includes('×') ||
-    operationString.includes('÷')
-  ) {
+  let tempOperator = getOperator(e.target.id);
+  console.log(tempOperator);
+  if (currentOperator === '') {
+    console.log(`currentOperator before: ${currentOperator}`);
+    currentOperator += tempOperator;
+    console.log(`currentOperator after: ${currentOperator}`);
+  } else {
     displayAnswer();
-    operationString = answer;
+    currentNum1 = answer;
+    currentOperator = tempOperator;
+    currentNum2 = '';
   }
-  operationString += getChosenOperator(e.target.id);
-  bottomDisplay.innerText = operationString;
   disableOperatorBtns();
+  enableDecimalBtn();
+  bottomDisplay.innerText = currentNum1 + currentOperator + currentNum2;
 }
 
-function getChosenNum(num) {
+function clearDisplay() {
+  currentNum1 = '';
+  currentNum2 = '';
+  currentOperator = '';
+  answer = '';
+  topDisplay.innerText = answer;
+  bottomDisplay.innerText = currentNum1 + currentOperator + currentNum2;
+}
+
+function getNum(num) {
   switch (num) {
     case 'zero':
       return '0';
@@ -103,13 +135,14 @@ function getChosenNum(num) {
     case 'nine':
       return '9';
     case 'decimal':
+      disableDecimalBtn();
       return '.';
     default:
       return 'Something went wrong';
   }
 }
 
-function getChosenOperator(operator) {
+function getOperator(operator) {
   switch (operator) {
     case 'add':
       return '+';
@@ -122,6 +155,14 @@ function getChosenOperator(operator) {
     default:
       return 'Something went wrong';
   }
+}
+
+function enableDecimalBtn() {
+  numBtns[10].disabled = false;
+}
+
+function disableDecimalBtn() {
+  numBtns[10].disabled = true;
 }
 
 function enableOperatorBtns() {
