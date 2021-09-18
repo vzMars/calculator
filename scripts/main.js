@@ -202,6 +202,7 @@ function disableOperatorBtns() {
   }
 }
 function getKeyInput(e) {
+  console.log(e.key);
   if ((e.key >= 0 && e.key <= 9) || e.key === '.') {
     if (e.key === '.') {
       disableDecimalBtn();
@@ -216,5 +217,9 @@ function getKeyInput(e) {
   }
   if (e.key === 'Delete' || e.key === 'Escape') {
     clearDisplay();
+  }
+
+  if (e.key === 'Backspace') {
+    deleteNumber();
   }
 }
