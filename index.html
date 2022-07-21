@@ -1,54 +1,36 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculator</title>
-    <link href="styles/style.css" rel="stylesheet" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap"
-      rel="stylesheet"
-    />
-    <script src="scripts/main.js" defer></script>
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/main.js" defer></script>
   </head>
   <body>
-    <div id="calc">
-      <div id="calc-display">
-        <div id="top-display" class="blueText"></div>
-        <div id="bottom-display"></div>
-      </div>
-      <div id="calc-buttons">
-        <button id="clear">CE</button>
-        <button id="delete">D</button>
-        <button id="empty"></button>
-        <button class="operatorBtns" id="divide" disabled>÷</button>
-        <button class="numBtns" id="seven">7</button>
-        <button class="numBtns" id="eight">8</button>
-        <button class="numBtns" id="nine">9</button>
-        <button class="operatorBtns" id="multiply" disabled>×</button>
-        <button class="numBtns" id="four">4</button>
-        <button class="numBtns" id="five">5</button>
-        <button class="numBtns" id="six">6</button>
-        <button class="operatorBtns" id="subtract" disabled>−</button>
-        <button class="numBtns" id="one">1</button>
-        <button class="numBtns" id="two">2</button>
-        <button class="numBtns" id="three">3</button>
-        <button class="operatorBtns" id="add" disabled>+</button>
-        <button class="numBtns" id="zero">0</button>
-        <button class="numBtns" id="decimal">.</button>
-        <button id="equal">=</button>
-      </div>
-    </div>
-    <footer id="footer">
-      <a href="https://github.com/vzMars"
-        ><img
-          src="images/GitHub-Mark-120px-plus.png"
-          id="logo"
-          alt="github-logo"
-      /></a>
-      <p>Created by <a href="https://github.com/vzMars">Marcos Gonzalez.</a></p>
-    </footer>
+    <section class="calculator">
+      <input type="text" value="" class="display" autocomplete="off" disabled />
+      <section class="buttons">
+        <button class="number" value="7">7</button>
+        <button class="number" value="8">8</button>
+        <button class="number" value="9">9</button>
+        <button class="operator" value="/">&#247;</button>
+        <button class="number" value="4">4</button>
+        <button class="number" value="5">5</button>
+        <button class="number" value="6">6</button>
+        <button class="operator" value="*">&#215;</button>
+        <button class="number" value="1">1</button>
+        <button class="number" value="2">2</button>
+        <button class="number" value="3">3</button>
+        <button class="operator" value="+">&#43;</button>
+        <button class="number" value="0">0</button>
+        <button id="decimal" class="number" value=".">.</button>
+        <button class="calculate">&#61;</button>
+        <button class="operator" value="-">&#8722;</button>
+        <button class="operator">Clear</button>
+      </section>
+    </section>
   </body>
 </html>
