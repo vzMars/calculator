@@ -87,6 +87,14 @@ class Calculator {
       this.updateDisplay();
     }
   }
+
+  clear() {
+    console.log('yo');
+    this.a = '';
+    this.operator = '';
+    this.b = '';
+    this.updateDisplay();
+  }
 }
 
 const calculator = new Calculator('', '', '');
@@ -102,6 +110,8 @@ btns.forEach((btn) =>
       calculator.updateOperator(e.target.value);
     } else if (e.target.className === 'calculate') {
       calculator.calculate();
+    } else if (e.target.className === 'clear') {
+      calculator.clear();
     }
   })
 );
