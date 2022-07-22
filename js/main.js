@@ -89,7 +89,6 @@ class Calculator {
   }
 
   clear() {
-    console.log('yo');
     this.a = '';
     this.operator = '';
     this.b = '';
